@@ -1,4 +1,11 @@
-import { Component, Input } from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition
+} from '@angular/animations';
+import { Component, HostBinding, Input } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MdDialog } from '@angular/material';
 
@@ -9,9 +16,23 @@ import { Student } from '../../models/student.model';
 @Component({
   selector: 'search-student',
   templateUrl: './student.component.html',
-  styleUrls: ['./student.component.css']
+  styleUrls: ['./student.component.css'],
+  animations: [
+    trigger('studentState', [
+      state('*', style({opacity: 1})),
+      transition(':enter', [
+        style({opacity: 0}),
+        animate('300ms ease-in', style({opacity: 1}))
+      ]),
+      transition(':leave', [
+        style({opacity: 1}),
+        animate('300ms ease-out', style({opacity: 0}))
+      ]),
+    ])
+  ]
 })
 export class StudentComponent {
+  @HostBinding('@studentState') fadeInAnimation = true;
 
   @Input()
   student: Student;
